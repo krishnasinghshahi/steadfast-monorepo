@@ -1,28 +1,28 @@
 #!/bin/bash
 
-# Global variable to track the background process PIDs
-declare -a pids
+# Global variable to track the tmux session
+SESSION_NAME="services"
 
 function menu {
     echo
-    echo --------------------------------------------------------------------------------
+    echo -----------------------------------------------------------
     echo "Choose an option:"
-    echo     "1.  Update everything (monorepo, app, api, websocket) (Recommended once a day)"
-    echo     "2.  Start everything (Flattrade, Shoonya, Dhan, API, and app)"
+    echo     " 1.  Update"
+    echo     " 2.  Start all services and terminal"
     echo
-    echo    "31.  Run Flattrade websocket, API, app, and terminal."
-    echo    "42.  Run Shoonya websocket, API, app, and terminal."
-    echo    "53.  Run Dhan websocket, API, app, and terminal."
+    echo    " 31.  Run Flattrade websocket, API, app, and terminal."
+    echo    " 42.  Run Shoonya websocket, API, app, and terminal."
+    echo    " 53.  Run Dhan websocket, API, app, and terminal."
     echo
-    echo    "310.  Run Flattrade websocket, API, and app"
-    echo    "420.  Run Shoonya websocket, API, and app"
-    echo    "530.  Run Dhan websocket, API, and app"
+    echo    " 310.  Run Flattrade websocket, API, and app"
+    echo    " 420.  Run Shoonya websocket, API, and app"
+    echo    " 530.  Run Dhan websocket, API, and app"
     echo
-    echo     "6.  Exit"
-    echo --------------------------------------------------------------------------------
+    echo     " 6.  Exit"
+    echo -----------------------------------------------------------
     echo
 
-    read -p "Enter your choice (1, 2, 31, 42, 53, 310, 420, 530, or 6): " choice
+    read -p "Enter your choice : " choice
     echo
     case $choice in
     1) update ;;
@@ -80,41 +80,28 @@ function update {
     menu
 }
 
+function start_tmux_session {
+    tmux new-session -d -s "$SESSION_NAME"
+}
+
 function start_api {
-    echo "Starting API..."
-    konsole --noclose -e bash -c "cd steadfast-api && sleep 2 && node server.js" || { echo "Failed to start API."; error; } &
-    pids+=($!)
+    tmux new-window -t "$SESSION_NAME" -n "API" "cd steadfast-api && sleep 2 && node server.js"
 }
 
 function start_app {
-    echo "Starting app..."
-    konsole --noclose -e bash -c "cd steadfast-app && sleep 2 && npm run dev" || { echo "Failed to start app."; error; } &
-    pids+=($!)
+    tmux new-window -t "$SESSION_NAME" -n "App" "cd steadfast-app && sleep 2 && npm run dev"
 }
 
-function start_flattrade_websocket {
-    echo "Starting Flattrade Websocket..."
-    konsole --noclose -e bash -c "cd steadfast-websocket/flattrade && python3 flattrade-websocket.py" || { echo "Failed to start Flattrade websocket."; error; } &
-    pids+=($!)
-}
-
-function start_shoonya_websocket {
-    echo "Starting Shoonya Websocket..."
-    konsole --noclose -e bash -c "cd steadfast-websocket/shoonya && python3 shoonya-websocket.py" || { echo "Failed to start Shoonya websocket."; error; } &
-    pids+=($!)
-}
-
-function start_dhan_websocket {
-    echo "Starting Dhan Websocket..."    
-    konsole --noclose -e bash -c "cd steadfast-websocket/dhanhq && python3 dhan-websocket.py" || { echo "Failed to start Dhan websocket."; error; } &
-    pids+=($!)
+function start_websockets {
+    tmux new-window -t "$SESSION_NAME" -n "Websocket" "cd steadfast-websocket/flattrade && python3 flattrade-websocket.py"
+    tmux split-window -t "$SESSION_NAME:Websocket" "cd steadfast-websocket/shoonya && python3 shoonya-websocket.py"
+    tmux split-window -t "$SESSION_NAME:Websocket" "cd steadfast-websocket/dhanhq && python3 dhan-websocket.py"
 }
 
 function start_all {
     echo "Starting all services..."
-    start_flattrade_websocket
-    start_shoonya_websocket
-    start_dhan_websocket
+    start_tmux_session
+    start_websockets
     start_api
     start_app
 
@@ -130,15 +117,15 @@ function start_all {
     # Handle Ctrl+C to clean up and return to menu
     trap 'stop_services; exit 0' INT
 
-    # Keep the script running
-    while true; do
-        sleep 1
-    done
+    # Attach to the tmux session
+    tmux attach-session -t "$SESSION_NAME"
 }
 
 function run_flattrade_open_link {
-
-    start_flattrade_websocket
+    echo "Starting Flattrade websocket..."
+    start_tmux_session
+    tmux new-window -t "$SESSION_NAME" -n "Flattrade" "cd steadfast-websocket/flattrade && python3 flattrade-websocket.py"
+    
     start_api
     start_app
 
@@ -155,15 +142,15 @@ function run_flattrade_open_link {
     # Handle Ctrl+C to clean up and return to menu
     trap 'stop_services; exit 0' INT
 
-    # Keep the script running
-    while true; do
-        sleep 1
-    done
+    # Attach to the tmux session
+    tmux attach-session -t "$SESSION_NAME"
 }
 
 function run_flattrade {
-
-    start_flattrade_websocket
+    echo "Starting Flattrade websocket..."
+    start_tmux_session
+    tmux new-window -t "$SESSION_NAME" -n "Flattrade" "cd steadfast-websocket/flattrade && python3 flattrade-websocket.py"
+    
     start_api
     start_app
 
@@ -177,15 +164,15 @@ function run_flattrade {
     # Handle Ctrl+C to clean up and return to menu
     trap 'stop_services; exit 0' INT
 
-    # Keep the script running
-    while true; do
-        sleep 1
-    done
+    # Attach to the tmux session
+    tmux attach-session -t "$SESSION_NAME"
 }
 
 function run_shoonya_open_link {
-
-    start_shoonya_websocket
+    echo "Starting Shoonya websocket..."
+    start_tmux_session
+    tmux new-window -t "$SESSION_NAME" -n "Shoonya" "cd steadfast-websocket/shoonya && python3 shoonya-websocket.py"
+    
     start_api
     start_app
 
@@ -202,34 +189,37 @@ function run_shoonya_open_link {
     # Handle Ctrl+C to clean up and return to menu
     trap 'stop_services; exit 0' INT
 
-    # Keep the script running
-    while true; do
-        sleep 1
-    done
+    # Attach to the tmux session
+    tmux attach-session -t "$SESSION_NAME"
 }
-function run_shoonya {
 
-    start_shoonya_websocket
+function run_shoonya {
+    echo "Starting Shoonya websocket..."
+    start_tmux_session
+    tmux new-window -t "$SESSION_NAME" -n "Shoonya" "cd steadfast-websocket/shoonya && python3 shoonya-websocket.py"
+    
     start_api
     start_app
 
     echo "Shoonya, API, and app started."
     echo "Waiting for services to start..."
     sleep 5
+
     echo "Services started."
     echo "Press Ctrl+C in this terminal or any other terminal to stop all services."
 
     # Handle Ctrl+C to clean up and return to menu
     trap 'stop_services; exit 0' INT
 
-    # Keep the script running
-    while true; do
-        sleep 1
-    done
+    # Attach to the tmux session
+    tmux attach-session -t "$SESSION_NAME"
 }
-function run_dhan_open_link {
 
-    start_dhan_websocket
+function run_dhan_open_link {
+    echo "Starting Dhan websocket..."
+    start_tmux_session
+    tmux new-window -t "$SESSION_NAME" -n "Dhan" "cd steadfast-websocket/dhanhq && python3 dhan-websocket.py"
+    
     start_api
     start_app
 
@@ -246,15 +236,15 @@ function run_dhan_open_link {
     # Handle Ctrl+C to clean up and return to menu
     trap 'stop_services; exit 0' INT
 
-    # Keep the script running
-    while true; do
-        sleep 1
-    done
+    # Attach to the tmux session
+    tmux attach-session -t "$SESSION_NAME"
 }
 
 function run_dhan {
-
-    start_dhan_websocket
+    echo "Starting Dhan websocket..."
+    start_tmux_session
+    tmux new-window -t "$SESSION_NAME" -n "Dhan" "cd steadfast-websocket/dhanhq && python3 dhan-websocket.py"
+    
     start_api
     start_app
 
@@ -268,17 +258,13 @@ function run_dhan {
     # Handle Ctrl+C to clean up and return to menu
     trap 'stop_services; exit 0' INT
 
-    # Keep the script running
-    while true; do
-        sleep 1
-    done
+    # Attach to the tmux session
+    tmux attach-session -t "$SESSION_NAME"
 }
+
 function stop_services {
     echo "Stopping all services..."
-    for pid in "${pids[@]}"; do
-        kill "$pid" 2>/dev/null
-    done
-    pids=()
+    tmux kill-session -t "$SESSION_NAME" 2>/dev/null
     echo "All services stopped."
     clear
     menu
