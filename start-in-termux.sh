@@ -7,8 +7,8 @@ function menu {
     echo
     echo -----------------------------------------------------------
     echo "Choose an option:"
-    echo     " 1.  Update"
-    echo     " 2.  Start all services and terminal"
+    echo     " 1.  Update everything (Recommended per trading day)."
+    echo     " 2.  Start all services and terminal."
     echo
     echo    " 31.  Run Flattrade websocket, API, app, and terminal."
     echo    " 42.  Run Shoonya websocket, API, app, and terminal."
@@ -18,11 +18,10 @@ function menu {
     echo    " 420.  Run Shoonya websocket, API, and app"
     echo    " 530.  Run Dhan websocket, API, and app"
     echo
-    echo     " 6.  Exit"
+    echo     " 0.  Exit"
     echo -----------------------------------------------------------
-    echo
-
     read -p "Enter your choice : " choice
+    echo -----------------------------------------------------------    
     echo
     case $choice in
     1) update ;;
@@ -48,7 +47,7 @@ function update {
         echo "Error updating steadfast-monorepo."
         error
     }
-
+    echo
     echo "Updating steadfast-app..."
     cd steadfast-app || { echo "Directory steadfast-app not found."; error; }
     git stash
@@ -57,7 +56,7 @@ function update {
         error
     }
     cd ..
-
+    echo
     echo "Updating steadfast-api..."
     cd steadfast-api || { echo "Directory steadfast-api not found."; error; }
     git stash
@@ -65,8 +64,29 @@ function update {
         echo "Error updating steadfast-api."
         error
     }
+    for FILE in "NFO_symbols.txt" "BFO_symbols.txt"; do
+        if [ -f "$FILE" ]; then
+            rm "$FILE"
+        fi
+    done
+    URLS=(
+        "https://images.dhan.co/api-data/api-scrip-master.csv"
+        "https://flattrade.s3.ap-south-1.amazonaws.com/scripmaster/Bfo_Index_Derivatives.csv"
+        "https://flattrade.s3.ap-south-1.amazonaws.com/scripmaster/Nfo_Index_Derivatives.csv"
+        "https://api.shoonya.com/NFO_symbols.txt.zip"
+        "https://api.shoonya.com/BFO_symbols.txt.zip"
+    )
+    
+    for URL in "${URLS[@]}"; do
+        FILE=$(basename "$URL")
+        [ -f "$FILE" ] && rm "$FILE"
+        echo
+        echo "Downloading: $FILE"
+        wget -q -O "$FILE" "$URL"
+        echo "Saved: $FILE"
+    done       
     cd ..
-
+    echo
     echo "Updating steadfast-websocket..."
     cd steadfast-websocket || { echo "Directory steadfast-websocket not found."; error; }
     git stash
@@ -75,8 +95,8 @@ function update {
         error
     }
     cd ..
-
-    echo "Update complete."
+    echo
+    echo "Update completed."
     menu
 }
 
