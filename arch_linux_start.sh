@@ -10,22 +10,29 @@ function menu {
     echo     "1.  Update everything (monorepo, app, api, websocket) (Recommended once a day)"
     echo     "2.  Start everything (Flattrade, Shoonya, Dhan, API, and app)"
     echo
-    echo    "31.  Run Flattrade websocket, API, and app"
-    echo    "42.  Run Shoonya websocket, API, and app"
-    echo    "53.  Run Dhan websocket, API, and app"
+    echo    "31.  Run Flattrade websocket, API, app, and terminal."
+    echo    "42.  Run Shoonya websocket, API, app, and terminal."
+    echo    "53.  Run Dhan websocket, API, app, and terminal."
+    echo
+    echo    "310.  Run Flattrade websocket, API, and app"
+    echo    "420.  Run Shoonya websocket, API, and app"
+    echo    "530.  Run Dhan websocket, API, and app"
     echo
     echo     "6.  Exit"
     echo --------------------------------------------------------------------------------
     echo
 
-    read -p "Enter your choice (1, 2, 31, 42, 53, or 6): " choice
-
+    read -p "Enter your choice (1, 2, 31, 42, 53, 310, 420, 530, or 6): " choice
+    echo
     case $choice in
     1) update ;;
     2) start_all ;;
-    31) run_flattrade ;;
-    42) run_shoonya ;;
-    53) run_dhan ;;
+    31) run_flattrade_open_link ;;
+    42) run_shoonya_open_link ;;
+    53) run_dhan_open_link ;;
+    310) run_flattrade ;;
+    420) run_shoonya ;;
+    530) run_dhan ;;    
     6) exit 0 ;;
     *)
         echo "Invalid choice. Please try again."
@@ -124,7 +131,7 @@ function start_all {
     done
 }
 
-function run_flattrade {
+function run_flattrade_open_link {
     echo "Starting Flattrade websocket..."
     konsole --noclose -e bash -c "cd steadfast-websocket/flattrade && python3 flattrade-websocket.py" || { echo "Failed to start Flattrade websocket."; error; } &
     pids+=($!)
@@ -154,6 +161,59 @@ function run_flattrade {
     done
 }
 
+function run_flattrade {
+    echo "Starting Flattrade websocket..."
+    konsole --noclose -e bash -c "cd steadfast-websocket/flattrade && python3 flattrade-websocket.py" || { echo "Failed to start Flattrade websocket."; error; } &
+    pids+=($!)
+
+    start_api
+    start_app
+
+    echo "Flattrade, API, and app started."
+    echo "Waiting for services to start..."
+    sleep 5
+
+    echo "Services started."
+    echo "Press Ctrl+C in this terminal or any other terminal to stop all services."
+
+    # Handle Ctrl+C to clean up and return to menu
+    trap 'stop_services; exit 0' INT
+
+    # Keep the script running
+    while true; do
+        sleep 1
+    done
+}
+
+function run_shoonya_open_link {
+    echo "Starting Shoonya websocket..."
+    konsole --noclose -e bash -c "cd steadfast-websocket/shoonya && python3 shoonya-websocket.py" || { echo "Failed to start Shoonya websocket."; error; } &
+    pids+=($!)
+
+    start_api
+    start_app
+
+    echo "Shoonya, API, and app started."
+    echo "Waiting for services to start..."
+    sleep 5
+
+    echo "Opening browser to API's URL..."
+    xdg-open http://localhost:3000
+
+    echo "Opening browser to app's URL..."
+    xdg-open http://localhost:5173
+
+    echo "Services started and browsers opened."
+    echo "Press Ctrl+C in this terminal or any other terminal to stop all services."
+
+    # Handle Ctrl+C to clean up and return to menu
+    trap 'stop_services; exit 0' INT
+
+    # Keep the script running
+    while true; do
+        sleep 1
+    done
+}
 function run_shoonya {
     echo "Starting Shoonya websocket..."
     konsole --noclose -e bash -c "cd steadfast-websocket/shoonya && python3 shoonya-websocket.py" || { echo "Failed to start Shoonya websocket."; error; } &
@@ -163,6 +223,28 @@ function run_shoonya {
     start_app
 
     echo "Shoonya, API, and app started."
+    echo "Waiting for services to start..."
+    sleep 5
+    echo "Services started."
+    echo "Press Ctrl+C in this terminal or any other terminal to stop all services."
+
+    # Handle Ctrl+C to clean up and return to menu
+    trap 'stop_services; exit 0' INT
+
+    # Keep the script running
+    while true; do
+        sleep 1
+    done
+}
+function run_dhan_open_link {
+    echo "Starting Dhan websocket..."
+    konsole --noclose -e bash -c "cd steadfast-websocket/dhanhq && python3 dhan-websocket.py" || { echo "Failed to start Dhan websocket."; error; } &
+    pids+=($!)
+
+    start_api
+    start_app
+
+    echo "Dhan, API, and app started."
     echo "Waiting for services to start..."
     sleep 5
 
@@ -196,13 +278,7 @@ function run_dhan {
     echo "Waiting for services to start..."
     sleep 5
 
-    echo "Opening browser to API's URL..."
-    xdg-open http://localhost:3000
-
-    echo "Opening browser to app's URL..."
-    xdg-open http://localhost:5173
-
-    echo "Services started and browsers opened."
+    echo "Services started."
     echo "Press Ctrl+C in this terminal or any other terminal to stop all services."
 
     # Handle Ctrl+C to clean up and return to menu
@@ -213,7 +289,6 @@ function run_dhan {
         sleep 1
     done
 }
-
 function stop_services {
     echo "Stopping all services..."
     for pid in "${pids[@]}"; do
