@@ -21,7 +21,8 @@ function menu {
 function update {
     # Update the entire monorepo
     echo "Updating steadfast-monorepo..."
-    git pull https://github.com/narenkram/steadfast-monorepo main || {
+    git stash
+    git pull https://github.com/krishnasinghshahi/steadfast-monorepo || {
         echo "Error updating steadfast-monorepo."
         error
     }
@@ -29,7 +30,8 @@ function update {
     # Update steadfast-app
     echo "Updating steadfast-app..."
     cd steadfast-app || { echo "Directory steadfast-app not found."; error; }
-    git pull https://github.com/narenkram/steadfast-app main || {
+    git stash
+    git pull https://github.com/krishnasinghshahi/steadfast-app || {
         echo "Error updating steadfast-app."
         error
     }
@@ -38,7 +40,8 @@ function update {
     # Update steadfast-api
     echo "Updating steadfast-api..."
     cd steadfast-api || { echo "Directory steadfast-api not found."; error; }
-    git pull https://github.com/narenkram/steadfast-api main || {
+    git stash
+    git pull https://github.com/krishnasinghshahi/steadfast-api || {
         echo "Error updating steadfast-api."
         error
     }
@@ -47,7 +50,8 @@ function update {
     # Update steadfast-websocket
     echo "Updating steadfast-websocket..."
     cd steadfast-websocket || { echo "Directory steadfast-websocket not found."; error; }
-    git pull https://github.com/narenkram/steadfast-websocket main || {
+    git stash
+    git pull https://github.com/krishnasinghshahi/steadfast-websocket || {
         echo "Error updating steadfast-websocket."
         error
     }
