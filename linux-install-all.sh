@@ -24,21 +24,21 @@ function clone_repo {
 }
 
 # Clone the app repository and install dependencies
-clone_repo "https://github.com/narenkram/steadfast-app.git" "steadfast-app"
+clone_repo "https://github.com/krishnasinghshahi/steadfast-app.git" "steadfast-app"
 cd steadfast-app
 echo "Installing app dependencies..."
 npm install || error
 cd ..
 
 # Clone the API repository and install dependencies
-clone_repo "https://github.com/narenkram/steadfast-api.git" "steadfast-api"
+clone_repo "https://github.com/krishnasinghshahi/steadfast-api.git" "steadfast-api"
 cd steadfast-api
 echo "Installing API dependencies..."
 npm install || error
 cd ..
 
 # Clone the WebSocket repository and install dependencies
-clone_repo "https://github.com/narenkram/steadfast-websocket.git" "steadfast-websocket"
+clone_repo "https://github.com/krishnasinghshahi/steadfast-websocket.git" "steadfast-websocket"
 cd steadfast-websocket
 
 # Install NorenRestApi without dependencies
@@ -48,19 +48,16 @@ pip install --no-deps NorenRestApi || error
 echo "Installing WebSocket dependencies..."
 echo "Installing Flattrade dependencies..."
 cd flattrade
-chmod +x flattrade-websocket.py
 pip install -r requirements.txt || error
 cd ..
 
 echo "Installing Shoonya dependencies..."
 cd shoonya
-chmod +x shoonya-websocket.py
 pip install -r requirements.txt || error
 cd ..
 
 echo "Installing Dhanhq dependencies..."
 cd dhanhq
-chmod +x dhan-websocket.py
 pip install -r requirements.txt || error
 cd ../.. 
 echo "Repositories cloned and dependencies installed successfully."

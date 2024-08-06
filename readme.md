@@ -2,9 +2,9 @@
 
 This repository is a monorepo containing three main projects:
 
-1. [**steadfast-app**](https://github.com/narenkram/steadfast-app): The frontend application.
-2. [**steadfast-api**](https://github.com/narenkram/steadfast-api): The backend API server.
-3. [**steadfast-websocket**](https://github.com/narenkram/steadfast-websocket): The WebSocket service.
+1. [**steadfast-app**](https://github.com/krishnasinghshahi/steadfast-app): The frontend application.
+2. [**steadfast-api**](https://github.com/krishnasinghshahi/steadfast-api): The backend API server.
+3. [**steadfast-websocket**](https://github.com/krishnasinghshahi/steadfast-websocket): The WebSocket service.
 
 ### Quick Status (Updated: 26-07-2024)
 

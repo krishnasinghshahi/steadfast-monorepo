@@ -17,7 +17,7 @@ goto menu
 :update
 REM Update the entire monorepo
 echo Updating steadfast-monorepo...
-git pull https://github.com/narenkram/steadfast-monorepo main
+git pull https://github.com/krishnasinghshahi/steadfast-monorepo main
 if !errorlevel! neq 0 (
     echo Error updating steadfast-monorepo.
     goto :error
@@ -26,7 +26,7 @@ if !errorlevel! neq 0 (
 REM Update steadfast-app
 echo Updating steadfast-app...
 cd steadfast-app
-git pull https://github.com/narenkram/steadfast-app main
+git pull https://github.com/krishnasinghshahi/steadfast-app main
 if !errorlevel! neq 0 (
     echo Error updating steadfast-app.
     goto :error
@@ -36,7 +36,7 @@ cd ..
 REM Update steadfast-api
 echo Updating steadfast-api...
 cd steadfast-api
-git pull https://github.com/narenkram/steadfast-api main
+git pull https://github.com/krishnasinghshahi/steadfast-api main
 if !errorlevel! neq 0 (
     echo Error updating steadfast-api.
     goto :error
@@ -46,7 +46,7 @@ cd ..
 REM Update steadfast-websocket
 echo Updating steadfast-websocket...
 cd steadfast-websocket
-git pull https://github.com/narenkram/steadfast-websocket main
+git pull https://github.com/krishnasinghshahi/steadfast-websocket main
 if !errorlevel! neq 0 (
     echo Error updating steadfast-websocket.
     goto :error
