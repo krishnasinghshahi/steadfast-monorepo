@@ -2,6 +2,7 @@
 setlocal enabledelayedexpansion
 
 :menu
+echo.
 echo -----------------------------------------------------------
 echo Choose an option:
 echo 1. Update everything (Recommended per trading day).
@@ -16,6 +17,7 @@ echo 0. Exit
 echo -----------------------------------------------------------
 set /p choice="Enter your choice: "
 echo -----------------------------------------------------------
+echo.
 if "%choice%"=="1" goto update
 if "%choice%"=="2" goto run_all
 if "%choice%"=="31" goto run_flattrade_open_link
@@ -46,7 +48,7 @@ if !errorlevel! neq 0 (
     goto :error
 )
 cd ..
-
+echo.
 echo Updating steadfast-api...
 cd steadfast-api
 git stash
@@ -55,31 +57,36 @@ if !errorlevel! neq 0 (
     echo Error updating steadfast-api.
     goto :error
 )
-cd ..
-echo.
 
-echo Removing old files...
-del /q NFO_symbols.txt BFO_symbols.txt
+if exist NFO_symbols.txt del /q NFO_symbols.txt 
+if exist BFO_symbols.txt del /q BFO_symbols.txt 
 
-echo Downloading files...
-set URLS[0]=https://images.dhan.co/api-data/api-scrip-master.csv
-set URLS[1]=https://flattrade.s3.ap-south-1.amazonaws.com/scripmaster/Bfo_Index_Derivatives.csv
-set URLS[2]=https://flattrade.s3.ap-south-1.amazonaws.com/scripmaster/Nfo_Index_Derivatives.csv
-set URLS[3]=https://api.shoonya.com/NFO_symbols.txt.zip
-set URLS[4]=https://api.shoonya.com/BFO_symbols.txt.zip
+echo Downloading symbol files...
+set "URLS[0]=https://images.dhan.co/api-data/api-scrip-master.csv"
+set "URLS[1]=https://flattrade.s3.ap-south-1.amazonaws.com/scripmaster/Bfo_Index_Derivatives.csv"
+set "URLS[2]=https://flattrade.s3.ap-south-1.amazonaws.com/scripmaster/Nfo_Index_Derivatives.csv"
+set "URLS[3]=https://api.shoonya.com/NFO_symbols.txt.zip"
+set "URLS[4]=https://api.shoonya.com/BFO_symbols.txt.zip"
+
+set "FILES[0]=api-scrip-master.csv"
+set "FILES[1]=Bfo_Index_Derivatives.csv"
+set "FILES[2]=Nfo_Index_Derivatives.csv"
+set "FILES[3]=NFO_symbols.txt.zip"
+set "FILES[4]=BFO_symbols.txt.zip"
 
 for /L %%i in (0,1,4) do (
-    set URL=!URLS[%%i]!
-    set FILE=%%~nxi
-    if exist "!FILE!" del "!FILE!"
-    echo Downloading: !FILE!
-    wget -q -O "!FILE!" "!URL!"
+    set "FILE=!FILES[%%i]!"
+    if exist "!FILE!" (
+        del /q "!FILE!"
+    )
+	echo.
+    echo Downloading: !FILES[%%i]!
+    wget -q -O "!FILE!" "!URLS[%%i]!"
     echo Saved: !FILE!
 )
-cd ..
+
 cd ..
 echo.
-
 echo Updating steadfast-websocket...
 cd steadfast-websocket
 git stash
@@ -89,8 +96,9 @@ if !errorlevel! neq 0 (
     goto :error
 )
 cd ..
+echo.
 
-echo Update completedd.
+echo Update completed.
 goto menu
 
 :run_all
@@ -177,6 +185,32 @@ taskkill /F /IM python.exe > nul 2>&1
 echo All services stopped.
 goto menu
 
+:run_dhan_open_link
+echo Starting API...
+start /min cmd /c "cd steadfast-api && node server.js"
+
+echo Starting app...
+start /min cmd /c "cd steadfast-app && npm run dev"
+
+echo Starting Dhan websocket...
+start /min cmd /c "cd steadfast-websocket\dhanhq && python dhan-websocket.py"
+
+timeout /t 5
+
+echo Opening browser to app's URL...
+start http://localhost:5173
+
+echo Services started and browser opened. Close this window to stop all services.
+echo Press any key to stop all services...
+pause > nul
+
+echo Stopping services...
+taskkill /F /IM node.exe > nul 2>&1
+taskkill /F /IM python.exe > nul 2>&1
+
+echo All services stopped.
+goto menu
+
 :run_flattrade
 echo Starting API...
 start /min cmd /c "cd steadfast-api && node server.js"
@@ -213,32 +247,6 @@ start /min cmd /c "cd steadfast-websocket\shoonya && python shoonya-websocket.py
 timeout /t 5
 
 echo Services started. Close this window to stop all services.
-echo Press any key to stop all services...
-pause > nul
-
-echo Stopping services...
-taskkill /F /IM node.exe > nul 2>&1
-taskkill /F /IM python.exe > nul 2>&1
-
-echo All services stopped.
-goto menu
-
-:run_dhan_open_link
-echo Starting API...
-start /min cmd /c "cd steadfast-api && node server.js"
-
-echo Starting app...
-start /min cmd /c "cd steadfast-app && npm run dev"
-
-echo Starting Dhan websocket...
-start /min cmd /c "cd steadfast-websocket\dhanhq && python dhan-websocket.py"
-
-timeout /t 5
-
-echo Opening browser to app's URL...
-start http://localhost:5173
-
-echo Services started and browser opened. Close this window to stop all services.
 echo Press any key to stop all services...
 pause > nul
 
