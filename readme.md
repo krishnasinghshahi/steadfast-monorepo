@@ -2,9 +2,9 @@
 
 This repository is a monorepo containing three main projects:
 
-1. [**steadfast-app**](https://github.com/narenkram/steadfast-app): The frontend application.
-2. [**steadfast-api**](https://github.com/narenkram/steadfast-api): The backend API server.
-3. [**steadfast-websocket**](https://github.com/narenkram/steadfast-websocket): The WebSocket service.
+1. [**steadfast-app**](https://github.com/krishnasinghshahi/steadfast-app): The frontend application.
+2. [**steadfast-api**](https://github.com/krishnasinghshahi/steadfast-api): The backend API server.
+3. [**steadfast-websocket**](https://github.com/krishnasinghshahi/steadfast-websocket): The WebSocket service.
 
 ### Quick Status (Updated: 10-09-2024)
 
@@ -59,31 +59,31 @@ Legend:
 
 ## Light Mode
 
-![Preview in Light Mode](preview_light.png)
+![Preview in Light Mode](Images/preview_light.png)
 
 ## Dark Mode
 
-![Preview in Dark Mode](preview_dark.png)
+![Preview in Dark Mode](Images/preview_dark.png)
 
 ## App Settings
 
-![Preview in App Settings](preview_settings.png)
+![Preview in App Settings](Images/preview_settings.png)
 
 ## LTP Range Bar
 
-![Preview in LTP Range Bar](preview_ltprangebar.png)
+![Preview in LTP Range Bar](Images/preview_ltprangebar.png)
 
 ## One Click Trading Keys
 
-![Preview in One Click Trading](preview_oneclicktrade.png)
+![Preview in One Click Trading](Images/preview_oneclicktrade.png)
 
 ## Add Broker
 
-![Preview in Add Broker](preview_addbroker_light.png)
+![Preview in Add Broker](Images/preview_addbroker_light.png)
 
 ## Manage Brokers
 
-![Preview in Manage Brokers](preview_managebroker_light.png)
+![Preview in Manage Brokers](Images/preview_managebroker_light.png)
 
 # Join Our Telegram Channel
 
@@ -119,7 +119,7 @@ python -V
 2. Run the following command:
 
 ```bash
-git clone https://github.com/narenkram/steadfast-monorepo
+git clone https://github.com/krishnasinghshahi/steadfast-monorepo
 ```
 
 3. This will create a new folder named "steadfast-monorepo" in your current directory.
