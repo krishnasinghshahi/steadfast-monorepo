@@ -130,10 +130,10 @@ If you find this project useful, consider showing your support! Your donations h
 
 You can donate using UPI (Unified Payments Interface):
 
-<img src="upi_logo.png" alt="UPI Logo" width="80"/>
+<img src="Images/upi_logo.png" alt="UPI Logo" width="80"/>
 
 Scan the QR code below to make a UPI payment:
 
-<img src="scan_upi_id.jpg" alt="UPI QR Code" width="200"/>
+<img src="Images/scan_upi_id.jpg" alt="UPI QR Code" width="200"/>
 
 Thank you for your support!
