@@ -6,54 +6,9 @@ This repository is a monorepo containing three main projects:
 2. [**steadfast-api**](https://github.com/krishnasinghshahi/steadfast-api): The backend API server.
 3. [**steadfast-websocket**](https://github.com/krishnasinghshahi/steadfast-websocket): The WebSocket service.
 
-### Quick Status (Updated: 10-09-2024)
+### Quick Status
 
-Legend:
-🟢 Available/Implemented
-🟡 In Progress
-🔵 Planned
-⚡ Requested by our users
-🔴 Not Currently Considered
-
-| Feature                                        | Status |
-| ---------------------------------------------- | ------ |
-| **Supported Brokers**                          |        |
-| Flattrade                                      | 🟢     |
-| Shoonya (Finvasia)                             | 🟢     |
-| ⚡ Other Brokers                               | 🔴     |
-| **Trading Operations**                         |        |
-| Place Buy/Sell at market/limit orders          | 🟢     |
-| Cancel orders                                  | 🟢     |
-| Cancel selected orders                         | 🔵     |
-| Close all positions                            | 🟢     |
-| Close selected positions                       | 🟢     |
-| Select strikes                                 | 🟢     |
-| Modify open/pending order                      | 🔵     |
-| **Basic Features**                             |        |
-| Automatic ATM strike selection                 | 🟢     |
-| Selection Offsets                              | 🟢     |
-| Live MTM / PNL by Amount & ROI Percentage      | 🟢     |
-| Target & Stoploss by Percentage/Amount         | 🟢     |
-| Trailing Stoploss                              | 🔴     |
-| ⚡Underlying & Futures based Target & Stoploss | 🔵     |
-| Basket Orders                                  | 🟢     |
-| Ready Made Strategies                          | 🟡     |
-| **Key Features**                               |        |
-| One-click trading buttons                      | 🟢     |
-| Kill switch (client-side)                      | 🟢     |
-| Overtrade Protection                           | 🟢     |
-| Trade Journal                                  | 🔵     |
-| Paper Trading                                  | 🟡     |
-| Reports For IT Filing                          | 🔵     |
-| **Real-Time Market Data**                      |
-| LTP for underlying                             | 🟢     |
-| LTP for selected call/put strikes              | 🟢     |
-| LTP Range Bar                                  | 🟢     |
-
-#### Note:
-
-- kill switch works on client side only, you will still be able to trade from your broker terminal.
-- All these symbols can be traded: NIFTY, BANKNIFTY, FINIFTY, MIDCPNIFTY, SENSEX, and BANKEX.
+For the most up-to-date status of features and implementations, please refer to our [Status Page](status.md).
 
 # App Screenshots
 
@@ -89,7 +44,7 @@ Legend:
 
 Stay updated by joining our [Telegram Channel](https://t.me/steadfastapp).
 
-## Steps to run the app
+# ⚡ Steps to run the app
 
 ### `Step 0`: Prerequisites
 
@@ -147,3 +102,38 @@ Double-click the `start-all.bat` file or run it from the command prompt.
 
 - To `Stop` simply close the opened command prompt windows.
 - Or Press any key to stop the app, api and websocket.
+
+# 📜 License
+
+This project is licensed under a Custom Free Use, No Commercialization License. It allows free use for personal and non-commercial purposes. Commercial use is possible but requires explicit permission and a revenue-sharing agreement with the project creator. For full license terms, please see the [LICENSE](LICENSE) file in this repository.
+
+# 🤝 Contributing
+
+Contributions are welcome! If you find any issues or want to add enhancements, feel free to submit a pull request. By contributing to this project, you agree that your contributions will be licensed under the same license terms as the project.
+
+# 💼 Project Acquisition
+
+This project is available for acquisition for 15 Lakhs (₹15,00,000) INR. The sale includes:
+
+- Full ownership and all rights to the project
+- The ability to make the project closed-source
+- Complete freedom for any kind of commercialization
+- Transfer of all associated repositories and assets
+
+Upon completion of the sale, the current creator will step away from the project entirely.
+
+Interested parties can contact email@narenkram.com for serious inquiries.
+
+# ☕ Donate
+
+If you find this project useful, consider showing your support! Your donations help maintain and improve the project. 😄
+
+You can donate using UPI (Unified Payments Interface):
+
+<img src="upi_logo.png" alt="UPI Logo" width="80"/>
+
+Scan the QR code below to make a UPI payment:
+
+<img src="scan_upi_id.jpg" alt="UPI QR Code" width="200"/>
+
+Thank you for your support!
